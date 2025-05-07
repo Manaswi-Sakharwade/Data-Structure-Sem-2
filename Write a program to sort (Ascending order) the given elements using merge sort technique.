@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include "MergeSortFunctions.c"
+void main() {
+	int arr[15], i, n;
+	printf("Enter array size : ");
+	scanf("%d", &n);
+	printf("Enter %d elements : ", n);
+	for (i = 0; i < n; i++) {
+		scanf("%d", &arr[i]);
+	}
+	printf("Before sorting the elements are : ");
+	display(arr, n);
+	splitAndMerge(arr, 0, n - 1);
+	printf("After sorting the elements are : ");
+	display(arr, n);
+}
+
+
+void display(int arr[15], int n) {
+	for(int i = 0; i < n; i++)
+		printf("%d ", arr[i]);
+	printf("\n");
+}
+void merge(int arr[15], int low, int mid, int high) {
+	int n1 = mid - low + 1;
+	int n2 = high - mid;
+
+	int lowarr[n1], higharr[n2];
+
+	for(int i = 0; i < n1; i++)
+		lowarr[i] = arr[low + i];
+	for(int i = 0; i < n2; i++)
+		higharr[i] = arr[mid + 1 + i];
+
+	int i = 0;
+	int j = 0;
+	int k = low;
+
+	while(i < n1 && j < n2){
+		if(lowarr[i] <= higharr[j]){
+			arr[k] = lowarr[i];
+			i++;
+		}
+		else{
+			arr[k] = higharr[j];
+			j++;
+		}
+		k++;
+	}
+
+	while(i < n1){
+		arr[k] = lowarr[i];
+		i++;
+		k++;
+	}
+
+	while(j < n2){
+		arr[k] = higharr[j];
+		j++;
+		k++;
+	}
+}
+void splitAndMerge(int arr[15], int low, int high) {
+	if(low < high){
+		int mid = low + (high - low) / 2;
+
+		splitAndMerge(arr, low, mid);
+		splitAndMerge(arr, mid + 1, high);
+
+		merge(arr, low, mid, high);
+	}
+}
